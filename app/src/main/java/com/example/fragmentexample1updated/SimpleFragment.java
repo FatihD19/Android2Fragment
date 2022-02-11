@@ -7,6 +7,9 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.TextView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -24,10 +27,15 @@ public class SimpleFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
+    private static final int YES = 1;
+    private static final int NO = 0;
     public SimpleFragment() {
         // Required empty public constructor
     }
-
+    public static SimpleFragment newInstance(){
+        SimpleFragment fragment = new SimpleFragment();
+        return fragment;
+    }
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -59,6 +67,24 @@ public class SimpleFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_simple, container, false);
+        View view = inflater.inflate(R.layout.fragment_simple, container, false);
+        TextView questionTextView = view.findViewById(R.id.fragment_header);
+
+        RadioGroup radioGroup = view.findViewById(R.id.radio_group);
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                RadioButton checkedButton = radioGroup.findViewById(i);
+                int idx = radioGroup.indexOfChild(checkedButton);
+
+                if (idx == YES){
+                    questionTextView.setText(R.string.yes_message);
+                }
+                else{
+                    questionTextView.setText(R.string.no_message);
+                }
+            }
+        });
+        return view;
     }
 }
